@@ -1,11 +1,14 @@
 package com.biblioteca.gerenciador_biblioteca_api.service;
 
+import com.biblioteca.gerenciador_biblioteca_api.exception.GlobalExceptionHandler;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.model.Loan;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.repository.BookRepository;
 import com.biblioteca.gerenciador_biblioteca_api.repository.LoanRepository;
 import com.biblioteca.gerenciador_biblioteca_api.repository.MemberRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -52,8 +55,27 @@ public class LoanService {
         }
     }
 
-    public List<Loan> findAllLoans() {
-        List<Loan> listLoans = loanRepository.findAll();
-        return listLoans;
+    public Page<Loan> findAllLoans(Pageable pageable) {
+        return loanRepository.findAll(pageable);
+    }
+
+    public List<Loan> findActiveLoans(){
+        return loanRepository.findByReturnDateIsNull();
+    }
+
+    public List<Loan> findLoansByMemberId(Long memberId){
+        if(memberRepository.existsById(memberId)) {
+            return loanRepository.findByMemberId(memberId);
+        } else {
+            throw new IllegalArgumentException("Membro não encontrado com o ID: " + memberId);
+        }
+    }
+
+    public List<Loan> findLoansByBookId(Long bookId){
+        if(bookRepository.existsById(bookId)) {
+            return loanRepository.findByBookId(bookId);
+        } else {
+            throw new IllegalArgumentException("Livro não encontrado com o ID: " + bookId);
+        }
     }
 }
