@@ -1,8 +1,11 @@
 package com.biblioteca.gerenciador_biblioteca_api.controller;
 
+import com.biblioteca.gerenciador_biblioteca_api.dto.BookResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,19 +31,14 @@ public class BookController {
     }
 
     @GetMapping()
-    public List<Book> findAllBooks() {
-        return bookService.findAllBooks();
+    public ResponseEntity<Page<BookResponseDTO>> findAllBooks(Pageable pageable) {
+        return ResponseEntity.ok().body(bookService.findAllBooks(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> findBookById(@PathVariable Long id) {
-        Optional<Book> bookById = bookService.findBookById(id);
-        if (bookById.isPresent()) {
-            Book foundBook = bookById.get();
-            return ResponseEntity.ok().body(foundBook);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<BookResponseDTO> findBookById(@PathVariable Long id) {
+        BookResponseDTO bookDTO = bookService.findBookById(id);
+        return ResponseEntity.ok().body(bookDTO);
     }
 
     @PutMapping("/{id}")

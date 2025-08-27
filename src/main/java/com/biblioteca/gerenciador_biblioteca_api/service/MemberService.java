@@ -1,8 +1,13 @@
 package com.biblioteca.gerenciador_biblioteca_api.service;
 
+import com.biblioteca.gerenciador_biblioteca_api.dto.MemberResponseDTO;
+import com.biblioteca.gerenciador_biblioteca_api.exception.ResourceNotFoundException;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.repository.MemberRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,20 +16,22 @@ import java.util.Optional;
 @Service
 public class MemberService {
 
+    @Autowired
     private MemberRepository memberRepository;
 
     public Member saveMember(Member member) {
         return memberRepository.save(member);
     }
 
-    public List<Member> findAllMembers() {
-        List<Member> allMembers = memberRepository.findAll();
-        return allMembers;
+    public Page<MemberResponseDTO> findAllMembers(Pageable pageable) {
+        Page<Member> memberPage = memberRepository.findAll(pageable);
+        return memberPage.map(MemberMapper::toDTO);
     }
 
-    public Optional<Member> findMemberById(Long id) {
-        Optional<Member> memberById = memberRepository.findById(id);
-        return memberById;
+    public MemberResponseDTO findMemberById(Long id) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Membro não encontrado com o ID: " + id));
+        return MemberMapper.toDTO(member);
     }
 
     public Optional<Member> updateMember(Long id, Member member) {

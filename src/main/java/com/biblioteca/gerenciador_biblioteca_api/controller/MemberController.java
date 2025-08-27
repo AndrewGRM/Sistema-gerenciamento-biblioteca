@@ -1,8 +1,12 @@
 package com.biblioteca.gerenciador_biblioteca_api.controller;
 
+import com.biblioteca.gerenciador_biblioteca_api.dto.MemberResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.service.MemberService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +24,7 @@ import java.util.Optional;
 @RequestMapping("/api/members")
 public class MemberController {
 
+    @Autowired
     private MemberService memberService;
 
     @PostMapping
@@ -28,19 +33,14 @@ public class MemberController {
     }
 
     @GetMapping
-    public List<Member> findAllMembers(){
-        return memberService.findAllMembers();
+    public ResponseEntity<Page<MemberResponseDTO>> findAllMembers(Pageable pageable){
+        return ResponseEntity.ok().body(memberService.findAllMembers(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Member> findMemberById(@PathVariable Long id) {
-        Optional<Member> memberById = memberService.findMemberById(id);
-        if(memberById.isPresent()) {
-            Member foundMember = memberById.get();
-            return ResponseEntity.ok().body(foundMember);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<MemberResponseDTO> findMemberById(@PathVariable Long id) {
+        MemberResponseDTO memberDTO = memberService.findMemberById(id);
+        return ResponseEntity.ok().body(memberDTO);
     }
 
     @PutMapping("/{id}")

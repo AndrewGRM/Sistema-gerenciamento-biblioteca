@@ -1,13 +1,14 @@
 package com.biblioteca.gerenciador_biblioteca_api.controller;
 
 import com.biblioteca.gerenciador_biblioteca_api.dto.LoanRequest;
+import com.biblioteca.gerenciador_biblioteca_api.dto.LoanResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Loan;
 import com.biblioteca.gerenciador_biblioteca_api.service.LoanService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @RequestMapping("/api/loans")
 public class LoanController {
 
+    @Autowired
     private LoanService loanService;
 
     @PostMapping("/borrow")
@@ -46,22 +48,22 @@ public class LoanController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<Loan>> findAllLoans(Pageable pageable) {
+    public ResponseEntity<Page<LoanResponseDTO>> findAllLoans(Pageable pageable) {
         return ResponseEntity.ok().body(loanService.findAllLoans(pageable));
     }
 
     @GetMapping("/active")
-    public ResponseEntity<List<Loan>> findActiveLoans(){
-        return ResponseEntity.ok().body(loanService.findActiveLoans());
+    public ResponseEntity<Page<LoanResponseDTO>> findActiveLoans(Pageable pageable){
+        return ResponseEntity.ok().body(loanService.findActiveLoans(pageable));
     }
 
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<List<Loan>> findLoansByMemberId(@PathVariable Long memberId){
-        return ResponseEntity.ok().body(loanService.findLoansByMemberId(memberId));
+    public ResponseEntity<Page<LoanResponseDTO>> findLoansByMemberId(@PathVariable Long memberId, Pageable pageable){
+        return ResponseEntity.ok().body(loanService.findLoansByMemberId(memberId, pageable));
     }
 
     @GetMapping("/book/{bookId}")
-    public ResponseEntity<List<Loan>> findLoansByBookId(@PathVariable Long bookId){
-        return ResponseEntity.ok().body(loanService.findLoansByBookId(bookId));
+    public ResponseEntity<Page<LoanResponseDTO>> findLoansByBookId(@PathVariable Long bookId, Pageable pageable){
+        return ResponseEntity.ok().body(loanService.findLoansByBookId(bookId, pageable));
     }
 }

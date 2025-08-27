@@ -16,15 +16,15 @@ public class Book {
 
     private String autor;
 
-    private Integer anoPublicacao;
+    private Integer PublicationDate;
 
     private String genero;
 
-    public Book(Long id, String titulo, String autor, Integer anoPublicacao, String genero) {
+    public Book(Long id, String titulo, String autor, Integer PublicationDate, String genero) {
         this.id = id;
         this.titulo = titulo;
         this.autor = autor;
-        this.anoPublicacao = anoPublicacao;
+        this.PublicationDate = PublicationDate;
         this.genero = genero;
     }
 
@@ -40,11 +40,11 @@ public class Book {
         this.id = id;
     }
 
-    public String getTitulo() {
+    public String getTitle() {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitle(String titulo) {
         this.titulo = titulo;
     }
 
@@ -57,11 +57,11 @@ public class Book {
     }
 
     public Integer getAnoPublicacao() {
-        return anoPublicacao;
+        return PublicationDate;
     }
 
     public void setAnoPublicacao(Integer anoPublicacao) {
-        this.anoPublicacao = anoPublicacao;
+        this.PublicationDate = PublicationDate;
     }
 
     public String getGenero() {

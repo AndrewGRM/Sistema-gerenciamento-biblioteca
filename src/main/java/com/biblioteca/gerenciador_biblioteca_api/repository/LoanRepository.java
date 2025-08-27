@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,11 +14,11 @@ public interface LoanRepository extends JpaRepository<Loan, Long> {
 
     Optional<Loan> findByBookIdAndReturnDateIsNull(Long bookId);
 
-    List<Loan> findByReturnDateIsNull();
+    Page<Loan> findByReturnDateIsNull(Pageable pageable);
 
-    List<Loan> findByMemberId(Long memberId);
+    Page<Loan> findByMemberId(Long memberId, Pageable pageable);
 
-    List<Loan> findByBookId(Long bookId);
+    Page<Loan> findByBookId(Long bookId, Pageable pageable);
 
     Page<Loan> findAll(Pageable pageable);
 

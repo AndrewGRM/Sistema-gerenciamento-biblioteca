@@ -1,12 +1,14 @@
 package com.biblioteca.gerenciador_biblioteca_api.service;
 
+import com.biblioteca.gerenciador_biblioteca_api.dto.BookResponseDTO;
+import com.biblioteca.gerenciador_biblioteca_api.exception.ResourceNotFoundException;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 
@@ -21,21 +23,22 @@ public class BookService {
         return saveBook;
     }
 
-    public List<Book> findAllBooks() {
-        List<Book> allBooks = bookRepository.findAll();
-        return allBooks;
+    public Page<BookResponseDTO> findAllBooks(Pageable pageable) {
+        Page<Book> bookPage = bookRepository.findAll(pageable);
+        return bookPage.map(BookMapper::toDTO);
     }
 
-    public Optional<Book> findBookById(Long id) {
-        Optional<Book> BookById = bookRepository.findById(id);
-        return BookById;
+    public BookResponseDTO findBookById(Long id) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado com o ID: " + id));
+        return BookMapper.toDTO(book);
     }
 
     public Optional<Book> updateBook(Long id, Book book) {
         Optional<Book> bookById = bookRepository.findById(id);
         if (bookById.isPresent()) {
             Book existingBook = bookById.get();
-            existingBook.setTitulo(book.getTitulo());
+            existingBook.setTitle(book.getTitle());
             existingBook.setAutor(book.getAutor());
             existingBook.setGenero(book.getGenero());
             existingBook.setAnoPublicacao(book.getAnoPublicacao());
