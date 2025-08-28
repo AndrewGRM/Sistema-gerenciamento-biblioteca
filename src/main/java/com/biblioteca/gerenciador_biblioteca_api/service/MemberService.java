@@ -38,9 +38,9 @@ public class MemberService {
         Optional<Member> memberById = memberRepository.findById(id);
         if (memberById.isPresent()) {
             Member existingMember = memberById.get();
-            existingMember.setNome(member.getNome());
+            existingMember.setName(member.getName());
             existingMember.setEmail(member.getEmail());
-            existingMember.setTelefone(member.getTelefone());
+            existingMember.setPhoneNumber(member.getPhoneNumber());
             memberRepository.save(existingMember);
             return Optional.of(memberRepository.save(existingMember));
         } else {

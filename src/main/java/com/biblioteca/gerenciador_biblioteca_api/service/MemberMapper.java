@@ -8,9 +8,9 @@ public class MemberMapper {
     public static MemberResponseDTO toDTO(Member member) {
         return new MemberResponseDTO(
                 member.getId(),
-                member.getNome(),
+                member.getName(),
                 member.getEmail(),
-                member.getTelefone()
+                member.getPhoneNumber()
         );
     }
 }

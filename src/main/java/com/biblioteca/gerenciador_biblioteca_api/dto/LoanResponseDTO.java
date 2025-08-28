@@ -16,7 +16,7 @@ public class LoanResponseDTO {
     public LoanResponseDTO(Loan loan) {
         this.id = loan.getId();
         this.bookTitle = loan.getBook().getTitle();
-        this.memberName = loan.getMember().getNome();
+        this.memberName = loan.getMember().getName();
         this.loanDate = loan.getLoanDate();
         this.returnDate = loan.getReturnDate();
     }

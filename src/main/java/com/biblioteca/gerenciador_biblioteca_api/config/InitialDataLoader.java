@@ -8,6 +8,7 @@ import com.biblioteca.gerenciador_biblioteca_api.repository.LoanRepository;
 import com.biblioteca.gerenciador_biblioteca_api.repository.MemberRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 
@@ -17,11 +18,13 @@ public class InitialDataLoader implements CommandLineRunner {
     private BookRepository bookRepository;
     private MemberRepository memberRepository;
     private LoanRepository loanRepository;
+    private PasswordEncoder passwordEncoder;
 
-    public InitialDataLoader(BookRepository bookRepository, MemberRepository memberRepository, LoanRepository loanRepository) {
+    public InitialDataLoader(BookRepository bookRepository, MemberRepository memberRepository, LoanRepository loanRepository, PasswordEncoder passwordEncoder) {
         this.bookRepository = bookRepository;
         this.memberRepository = memberRepository;
         this.loanRepository = loanRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class InitialDataLoader implements CommandLineRunner {
         bookRepository.save(book1);
 
         // Lógica para criar e salvar membros
-        Member member1 = new Member(null, "Andrew", "andrew.grm@gmail.com", "940295212");
+        Member member1 = new Member(null, "Andrew", "andrew.grm@gmail.com", "940295212", passwordEncoder.encode("AndrewGRM500"));
         memberRepository.save(member1);
 
         // Lógica para criar e salvar empréstimos
