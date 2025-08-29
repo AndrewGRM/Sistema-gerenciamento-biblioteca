@@ -1,6 +1,7 @@
 package com.biblioteca.gerenciador_biblioteca_api.controller.auth;
 
 import com.biblioteca.gerenciador_biblioteca_api.dto.LoginRequestDTO;
+import com.biblioteca.gerenciador_biblioteca_api.dto.LoginResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.service.auth.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> Login(@RequestBody LoginRequestDTO loginRequestDTO) {
+    public ResponseEntity<LoginResponseDTO> Login(@RequestBody LoginRequestDTO loginRequestDTO) {
         // 1. Cria o objeto de autenticação com as credenciais do DTO
         var usernamePassword = new UsernamePasswordAuthenticationToken(loginRequestDTO.getEmail(), loginRequestDTO.getPassword());
 
@@ -38,6 +39,6 @@ public class AuthController {
         // 3. (Nova) Gere o token com base no usuário autenticado
         String token = tokenService.generateToken((Member) auth.getPrincipal());
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
