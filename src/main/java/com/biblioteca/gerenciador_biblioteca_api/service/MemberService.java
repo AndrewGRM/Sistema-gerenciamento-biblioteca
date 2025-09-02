@@ -2,7 +2,6 @@ package com.biblioteca.gerenciador_biblioteca_api.service;
 
 import com.biblioteca.gerenciador_biblioteca_api.dto.MemberResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.exception.ResourceNotFoundException;
-import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service

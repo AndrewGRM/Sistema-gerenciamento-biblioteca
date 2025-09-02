@@ -66,6 +66,10 @@ public class Member implements UserDetails {
         this.phoneNumber = phoneNumber;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
