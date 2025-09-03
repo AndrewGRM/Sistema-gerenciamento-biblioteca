@@ -56,12 +56,12 @@ public class Book {
         this.autor = autor;
     }
 
-    public Integer getAnoPublicacao() {
+    public Integer getPublicationDate() {
         return PublicationDate;
     }
 
-    public void setAnoPublicacao(Integer anoPublicacao) {
-        this.PublicationDate = PublicationDate;
+    public void setPublicationDate(Integer publicationDate) {
+        this.PublicationDate = publicationDate;
     }
 
     public String getGenero() {

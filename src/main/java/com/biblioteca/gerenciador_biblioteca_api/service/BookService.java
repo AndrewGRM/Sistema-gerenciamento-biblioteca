@@ -41,7 +41,7 @@ public class BookService {
             existingBook.setTitle(book.getTitle());
             existingBook.setAutor(book.getAutor());
             existingBook.setGenero(book.getGenero());
-            existingBook.setAnoPublicacao(book.getAnoPublicacao());
+            existingBook.setPublicationDate(book.getPublicationDate());
             bookRepository.save(existingBook);
             return Optional.of(bookRepository.save(existingBook));
         } else {
