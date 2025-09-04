@@ -1,6 +1,8 @@
 package com.biblioteca.gerenciador_biblioteca_api.service;
 
 import com.biblioteca.gerenciador_biblioteca_api.dto.LoanResponseDTO;
+import com.biblioteca.gerenciador_biblioteca_api.exception.BookAlreadyLoanedException;
+import com.biblioteca.gerenciador_biblioteca_api.exception.ResourceNotFoundException;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.model.Loan;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
@@ -28,21 +30,20 @@ public class LoanService {
     private MemberRepository memberRepository;
 
     public Loan saveNewLoan(Long bookId, Long memberId) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        Optional<Member> member = memberRepository.findById(memberId);
-        if(book.isPresent() && member.isPresent() && !loanRepository.findByBookIdAndReturnDateIsNull(bookId).isPresent()) {
-            Book foundBook = book.get();
-            Member foundMember = member.get();
+        Book foundBook = bookRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Livro não encontrado com o ID: " + bookId));
 
-            Loan loan = new Loan();
-            loan.setBook(foundBook);
-            loan.setMember(foundMember);
-            loan.setLoanDate(LocalDate.now());
+        Member foundMember = memberRepository.findById(memberId).orElseThrow(() -> new ResourceNotFoundException("Membro não encontrado com o ID: " + memberId));
 
-            return loanRepository.save(loan);
-        } else {
-            throw new IllegalArgumentException("Livro ou membro não encontrado, ou livro já emprestado.");
+        if(loanRepository.findByBookIdAndReturnDateIsNull(bookId).isPresent()) {
+            throw new BookAlreadyLoanedException("O livro já está emprestado.");
         }
+
+        Loan loan = new Loan();
+        loan.setBook(foundBook);
+        loan.setMember(foundMember);
+        loan.setLoanDate(LocalDate.now());
+
+        return loanRepository.save(loan);
     }
 
     public Optional<Loan> returnBook(Long id) {
@@ -73,7 +74,7 @@ public class LoanService {
             Page<Loan> loanPage = loanRepository.findByMemberId(memberId, pageable);
             return loanPage.map(LoanMapper::toDTO);
         } else {
-            throw new IllegalArgumentException("Membro não encontrado com o ID: " + memberId);
+            throw new ResourceNotFoundException("Membro não encontrado com o ID: " + memberId);
         }
     }
 
@@ -82,7 +83,7 @@ public class LoanService {
             Page<Loan> loanPage = loanRepository.findByBookId(bookId, pageable);
             return loanPage.map(LoanMapper::toDTO);
         } else {
-            throw new IllegalArgumentException("Livro não encontrado com o ID: " + bookId);
+            throw new ResourceNotFoundException("Livro não encontrado com o ID: " + bookId);
         }
     }
 }
