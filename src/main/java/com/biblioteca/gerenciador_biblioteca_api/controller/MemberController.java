@@ -4,6 +4,7 @@ import com.biblioteca.gerenciador_biblioteca_api.dto.MemberResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.service.MemberService;
+import com.biblioteca.gerenciador_biblioteca_api.util.ApiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/members")
+@RequestMapping(ApiConstants.MEMBERS_URL)
 public class MemberController {
 
     @Autowired

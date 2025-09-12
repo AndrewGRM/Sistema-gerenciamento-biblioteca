@@ -3,6 +3,7 @@ package com.biblioteca.gerenciador_biblioteca_api.controller;
 import com.biblioteca.gerenciador_biblioteca_api.dto.BookResponseDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Book;
 import com.biblioteca.gerenciador_biblioteca_api.service.BookService;
+import com.biblioteca.gerenciador_biblioteca_api.util.ApiConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping(ApiConstants.BOOKS_URL)
 public class BookController {
 
     @Autowired

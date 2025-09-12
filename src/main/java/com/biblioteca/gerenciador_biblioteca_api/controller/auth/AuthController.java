@@ -6,6 +6,8 @@ import com.biblioteca.gerenciador_biblioteca_api.dto.RegisterRequestDTO;
 import com.biblioteca.gerenciador_biblioteca_api.model.Member;
 import com.biblioteca.gerenciador_biblioteca_api.repository.MemberRepository;
 import com.biblioteca.gerenciador_biblioteca_api.service.auth.TokenService;
+import com.biblioteca.gerenciador_biblioteca_api.util.ApiConstants;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(ApiConstants.AUTH_URL)
 public class AuthController {
 
     @Autowired
@@ -54,7 +56,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequestDTO registerRequestDTO) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {
         if(memberRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()){
             return ResponseEntity.badRequest().body("Email already registered.");
         }
