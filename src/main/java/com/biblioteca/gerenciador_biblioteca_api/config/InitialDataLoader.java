@@ -34,7 +34,7 @@ public class InitialDataLoader implements CommandLineRunner {
         bookRepository.save(book1);
 
         // Lógica para criar e salvar membros
-        Member member1 = new Member(null, "Andrew", "andrew.grm@gmail.com", "940295212", passwordEncoder.encode("AndrewGRM500"));
+        Member member1 = new Member(null, "Usuario", "usuario@gmail.com", "940295212", passwordEncoder.encode("usuario1234"));
         memberRepository.save(member1);
 
         // Lógica para criar e salvar empréstimos
